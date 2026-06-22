@@ -1,10 +1,15 @@
 # A Comparision Between FIFA Men's World Cup Statistics & Country Infrastructure 
 
 **Primary Dataset**
+
 [International football results from 1872 to 2026](https://www.kaggle.com/datasets/martj42/international-football-results-from-1872-to-2017/data?select=results.csv)
 
 **Secondary Datasets**
-[TBD!!!]
+
+[International Liquidity from 1950 to 2025](https://data.imf.org/en/Data-Explorer?datasetUrn=IMF.STA:IL(13.0.1))
+
+[The Maddison Project Database 2023](https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023)
+
 
 ## Introduction
 
@@ -12,7 +17,7 @@ Football (soccer) is one of the most popular sports in the world. The Federation
 
 ## Background
 
-FIFA prides itself on promoting equality and fairness on and off football fields. By establishing strict regulations and providing financial support to all member associations, FIFA tries its hardest to prevent geopolitical affairs from negatively impacting the world of football. Despite FIFA's efforts, it could be argued that a country's economic status and infrastructure play a role in their national team's performance. 
+FIFA prides itself on promoting equality and fairness on and off football fields. By establishing strict regulations and providing financial support to all member associations, FIFA tries its hardest to prevent geopolitical affairs from negatively impacting the world of football. Despite FIFA's efforts, it could be argued that a country's economic status and infrastructure play a role in their national team's World Cup performance. 
 
 ## Why is This Comparison Necessary?
 
@@ -21,11 +26,49 @@ An analysis of FIFA World Cup statistics over time is necessary to identify pote
 ## What is Analyzed in This Comparison?
 
 This analysis focuses on:
-* National teams that have won the World Cup the most times
-* Team demographics and the clubs/leagues of players
-* Country infrastructure of winning national teams 
+* Best performing national teams in the FIFA World Cup, analyzed by:
+    - Countries with the most World Cup match wins
+    - Countries with the most World Cup match goals
+    - Countries with the most World Cup tournament wins
+
+* Worst performing national teams in the FIFA World Cup, analyzed by:
+    - Countries with the least World Cup match wins
+    - Countries with the least World Cup match goals
+
+* Team demographics and the clubs/leagues of players of best performing national teams, analyzed by:
+    - Countries of origin of players
+    - Clubs of players
+    - Weekly club salaries of players 
+
+* Country infrastructure of best performing national teams, analyzed by:
+    - GDP
+    - Total Reserves (gold at market value) from the International Liquidity dataset 
+* Country infrastructure of poor performing national teams, analyzed by:
+    - GDP
+    - Total Reserves (gold at market value) from the International Liquidity dataset
 
 ## Summary of Analysis
+
+* Countries with the most World Cup match wins:
+* Countries with the most World Cup match goals:
+* Countries with the most World Cup tournament wins:
+* Top performing countries
+* Top performing countries team demographics:
+    - [team 1]
+        * Clubs of starting 11
+        * Weekly salary of starting 11
+    - [team 2]
+        * Clubs of starting 11
+        * Weekly salary of starting 11
+    - [team 3]
+        * Clubs of starting 11
+        * Weekly salary of starting 11
+     - [team 4]
+        * Clubs of starting 11
+        * Weekly salary of starting 11
+     - [team 5]
+        * Clubs of starting 11
+        * Weekly salary of starting 11
 
 ## Sources 
 
