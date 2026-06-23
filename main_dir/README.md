@@ -21,7 +21,7 @@ FIFA prides itself on promoting equality and fairness on and off football fields
 
 ## Why is This Comparison Necessary?
 
-An analysis of FIFA World Cup statistics over time is necessary to identify potential correletions between a country's infrastructure and their performance in the World Cup. Important variables, such as team demographics, and country tenure of the sport is taken into account. This analysis can be used to identify any potential areas of improvement related to international football, raise awareness of hidden disparaties, and form predictions for upcoming World Cup tournaments. 
+An analysis of FIFA World Cup statistics over time is necessary to identify potential correlations between a country's infrastructure and their performance in the World Cup. Important variables, such as team demographics, and country tenure of the sport is taken into account. This analysis can be used to identify any potential areas of improvement related to international football, raise awareness of hidden disparaties, and form predictions for upcoming World Cup tournaments. 
 
 ## What is Analyzed in This Comparison?
 
@@ -50,9 +50,15 @@ This analysis focuses on:
 ## Summary of Analysis
 
 * Countries with the most World Cup match wins:
+    1. Brazil
+    2. Germany
+    3. Argentina
+    4. Italy
+    5. France
 * Countries with the most World Cup match goals:
+* Countries with the least World Cup match concessions: 
 * Countries with the most World Cup tournament wins:
-* Top performing countries
+* Top performing countries (based on the above metrics)
 * Top performing countries team demographics:
     - [team 1]
         * Clubs of starting 11
