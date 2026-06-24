@@ -8,6 +8,7 @@ PATH = 'results.csv'
 
 df = pd.read_csv(PATH)
 world_cup = df[df['tournament'] == 'FIFA World Cup']
+pd.set_option('display.max_row', None)
 pd.set_option('display.max_column', None)
 # countries_list = df[['home_team']].drop_duplicates()
 # print(countries_list.info())
@@ -112,20 +113,140 @@ max_goals_away_df_second = stripped_df[max_goals_away_second_condition]
 
 top_scores_home = stripped_df.sort_values(by='home_score', ascending=False)
 top_scores_away = stripped_df.sort_values(by='away_score', ascending=False)
-print(top_scores_home.head(40))
-print(top_scores_home.tail(40))
-print(top_scores_away.head(20))
-print(top_scores_away.tail(20))
-# Most goals: Hungary, Yugoslavia 
+# print(top_scores_home.head(40))
+# print(top_scores_home.tail(40))
+# print(top_scores_away.head(20))
+# print(top_scores_away.tail(20))
+
+stripped_df['losing_country'] = np.where(
+    stripped_df['winning_country'] == stripped_df['home_team'],
+    stripped_df['away_team'],
+    stripped_df['home_team']
+)
+stripped_df['goals_scored_by_winner'] = np.where(
+    stripped_df['winning_country'] == stripped_df['home_team'],
+    stripped_df['home_score'],
+    stripped_df['away_score']
+)
+
+stripped_df['goals_scored_by_loser'] = np.where(
+    stripped_df['losing_country'] == stripped_df['home_team'],
+    stripped_df['home_score'],
+    stripped_df['away_score']
+)
+# print(stripped_df.info())
+# print(stripped_df.head(10))
+
+most_goals_winners_df = stripped_df.groupby('winning_country')['goals_scored_by_winner'].sum().sort_values(ascending=False).reset_index()
+most_goals_losers_df = stripped_df.groupby('losing_country')['goals_scored_by_loser'].sum().sort_values(ascending=False).reset_index()
+num_of_matches_played_losers_df = stripped_df.groupby('losing_country')['date'].count().reset_index()
+num_of_matches_played_winners_df = stripped_df.groupby('winning_country')['date'].count().reset_index()
+num_of_matches_played_winners_df.rename(columns={'winning_country':'country', 'date':'matches_won'}, inplace=True)
+num_of_matches_played_losers_df.rename(columns={'losing_country':'country', 'date':'matches_lost'}, inplace=True)
+num_of_matches = pd.merge(num_of_matches_played_winners_df, num_of_matches_played_losers_df, on='country')
+num_of_matches['total_matches_played'] = num_of_matches['matches_won'] + num_of_matches['matches_lost']
+print(num_of_matches.info())
+print(num_of_matches.head(63))
+# print(num_of_matches_played_losers_df.head(10))
+# print(num_of_matches_played_winners_df.head(10))
+# print(most_goals_winners_df.head(20))
+# print(most_goals_losers_df.head(20))
+
+# all_countries = stripped_df['winning_country'].drop_duplicates().to_list()
+# all_countries = set(all_countries)
+# print(all_countries)
+# total = 0
+
+# losing_countries = stripped_df['losing_country'].to_list()
+
+#Countries that have conceded the most WC matches 
+# match_loss_count = {country: losing_countries.count(country) for country in all_countries}
+# sorted_match_loss_count = dict(sorted(match_loss_count.items(), key= lambda x:x[1], reverse=True))
+# print(sorted_match_loss_count)
+
+# print(stripped_df.info())
+
+print(num_of_matches.head(63).sort_values('total_matches_played', ascending=True))
+# print(num_of_matches['total_matches_played'].mean())
+
+# elite_teams = num_of_matches['total_matches_played'].quantile(0.90)
+# print(elite_teams)
 
 
-
-# Countries that have won the most WC matches
+# Top 5 Countries that have won the most WC matches
 # 1. Brazil
 # 2. Germany
 # 3. Argentina
 # 4. Italy
 # 5. France
 
+# Top 5 Countries that have scored the most goals in WC matches
+# 1. Brazil (226 goals)
+# 2. Germany (218 goals)
+# 3. Argentina (140 goals)
+# 4. France (127 goals)
+# 5. Italy (113 goals)
 
+# As of Wednesday June 24th 2026, there have been a total of 152 WC matches
+
+# Top 5 Countries that have played the most matches in WC history (This metric indicates
+# that a team consistently qualifies for the WC and advances steadily through the tournament; 
+# This metric includes the 2026 ongoing WC tournament)
+# 1. Brazil (95 matches)
+# 2. Germany (92 matches)
+# 3. Argentina (72 matches)
+# 4. Italy (62 matches)
+# 5. France (60 matches)
+
+# Top 5 Countries with the most WC match concessions (ATTENTION: more concessions means more matches played,
+# this metric is measured out of at least 33 matches played;
+# 33 matches played would mean the country has qualified consistently for the WC - at least 50% of WC tournaments
+# and/or has consistently advanced past the group stage)
+# 1. Mexico (28 matches lost out of 47)
+# 2. Argentina (24 matches lost out of 72)
+# 3. Germany (23 matches lost out of 92)
+# 4. France (20 matches lost out of 60)
+# 5. England (20 matches lost out of 53)
+
+# Top 5 countries with the least WC match concessions in 90th percentile
+# 1. Italy (17 matches lost out of 62)
+# 2. Brazil (19 matches lost out of 95)
+# 3. Spain (19 matches lost out of 50)
+# 4. France (20 matches lost out of 60) 
+# 5. England (20 matches lost out of 53) 
+
+# Top 5 Countries with the least WC match concessions (ATTENTION: more concessions means more matches played,
+# this metric is measured out of at least 23 matches played (the avg);)
+# 1. Croatia (10 matches lost out of 23)
+# 2. The Netherlands (11 matches lost out of 41)
+# 3. Portugal (12 matches lost out of 29)
+# 4. Yugoslavia (12 matches lost out of 26)
+# 5. Austria (13 matches lost out of 26)
+
+# num_of_matches_played_losers_df = num_of_matches_played_losers_df.rename(column={'losing_country':'country'})
+# num_of_matches_played_winners_df = num_of_matches_played_winners_df.rename(column={'winning_country':'country'})
+# print(num_of_matches_played_losers_df.head(85))
+# print(num_of_matches_played_winners_df.head(63))
+
+# Top 5 countries that have played the least WC matches in WC history (This metric indicates
+# that a team does not consistently qualify for the WC and/or does not advance steadily through the tournament; 
+# This metric includes the 2026 ongoing WC tournament)
+# 1. Cuba (2 matches played)
+# 2. Slovakia (3 matches played)
+# 3. Jamaica (3 matches played)
+# 4. Wales (4 matches played)
+# 5. Czech Republic (4 matches played)
+
+# Top 6 countries with the least WC match concessions (ATTENTION: Looking at 6 because of the inclusion of 
+# German DR in this list (a now obsolete country), less concessions often means less matches played,
+# this metric is qualified by number of matches played;
+# Less than 22 matches played would mean the country has either NOT qualified for every WC, excluding 2026, or has NOT advanced past the group stage)
+# 1. Cuba (1 match lost out of 2)
+# 2. Ukraine (2 matches lost out of 4)
+# 3. Slovakia (2 matches lost out of 3)
+# 4. German DR - Soviet Communist state of East Germany, obsolete post 1990 (2 matches lost out of 4)
+# 5. Jamaica (2 matches lost out of 3)
+# 6. Czech Republic (3 matches lost out of 4)
+
+# Avg number of matches played approx 23
 

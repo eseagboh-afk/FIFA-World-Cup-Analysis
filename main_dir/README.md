@@ -49,30 +49,55 @@ This analysis focuses on:
 
 ## Summary of Analysis
 
+* Average number of World Cup matches played by each team:
+    **Approximately 23**
+
 * Countries with the most World Cup match wins:
     1. Brazil
     2. Germany
     3. Argentina
     4. Italy
     5. France
+
 * Countries with the most World Cup match goals:
-* Countries with the least World Cup match concessions: 
+    1. Brazil (226 goals)
+    2. Germany (218 goals)
+    3. Argentina (140 goals)
+    4. France (127 goals)
+    5. Italy (113 goals)
+
+* Countries that have played the most World Cup matches:
+    1. Brazil (95 matches)
+    2. Germany (92 matches)
+    3. Argentina (72 matches)
+    4. Italy (62 matches)
+    5. France (60 matches)
+
+* Countries with the least World Cup match concessions who have played at least 49 matches (these teams have played more matches than 90% of world cup qualifiers over time):
+    1. Italy (17 matches lost out of 62)
+    2. Brazil (19 matches lost out of 95)
+    3. Spain (19 matches lost out of 50)
+    4. France (20 matches lost out of 60) 
+    5. England (20 matches lost out of 53)
+
+* Countries with the least World Cup match concessions who have played at least 23 matches (the average): 
+
 * Countries with the most World Cup tournament wins:
 * Top performing countries (based on the above metrics)
 * Top performing countries team demographics:
-    - [team 1]
+    - Brazil
         * Clubs of starting 11
         * Weekly salary of starting 11
-    - [team 2]
+    - Italy
         * Clubs of starting 11
         * Weekly salary of starting 11
-    - [team 3]
+    - Argentina
         * Clubs of starting 11
         * Weekly salary of starting 11
-     - [team 4]
+     - France
         * Clubs of starting 11
         * Weekly salary of starting 11
-     - [team 5]
+     - Germany
         * Clubs of starting 11
         * Weekly salary of starting 11
 
