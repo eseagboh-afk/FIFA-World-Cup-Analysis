@@ -145,12 +145,12 @@ num_of_matches_played_winners_df.rename(columns={'winning_country':'country', 'd
 num_of_matches_played_losers_df.rename(columns={'losing_country':'country', 'date':'matches_lost'}, inplace=True)
 num_of_matches = pd.merge(num_of_matches_played_winners_df, num_of_matches_played_losers_df, on='country')
 num_of_matches['total_matches_played'] = num_of_matches['matches_won'] + num_of_matches['matches_lost']
-print(num_of_matches.info())
-print(num_of_matches.head(63))
+# print(num_of_matches.info())
+# print(num_of_matches.head(63))
 # print(num_of_matches_played_losers_df.head(10))
 # print(num_of_matches_played_winners_df.head(10))
-# print(most_goals_winners_df.head(20))
-# print(most_goals_losers_df.head(20))
+# print(most_goals_winners_df.head(80))
+# print(most_goals_losers_df.head(80))
 
 # all_countries = stripped_df['winning_country'].drop_duplicates().to_list()
 # all_countries = set(all_countries)
@@ -166,7 +166,7 @@ print(num_of_matches.head(63))
 
 # print(stripped_df.info())
 
-print(num_of_matches.head(63).sort_values('total_matches_played', ascending=True))
+# print(num_of_matches.head(63).sort_values('total_matches_played', ascending=True))
 # print(num_of_matches['total_matches_played'].mean())
 
 # elite_teams = num_of_matches['total_matches_played'].quantile(0.90)
@@ -250,3 +250,177 @@ print(num_of_matches.head(63).sort_values('total_matches_played', ascending=True
 
 # Avg number of matches played approx 23
 
+# * Top performing countries and their 2026 World Cup team demographics:
+#     - Brazil
+#         * Clubs of starting 11 of their first World Cup match: 
+#         * Weekly salary of starting 11
+#     - Italy
+#         * Clubs of starting 11
+#         * Weekly salary of starting 11
+#     - Argentina
+#         * Clubs of starting 11
+#         * Weekly salary of starting 11
+#      - France
+#         * Clubs of starting 11
+#         * Weekly salary of starting 11
+#      - Germany
+#         * Clubs of starting 11
+#         * Weekly salary of starting 11
+
+
+PATH_GDP = 'gdp_dataset.csv'
+gdp_df = pd.read_csv(PATH_GDP)
+
+# print(gdp_df.info())
+
+# Brazil
+brazil = gdp_df['countrycode'] == 'BRA'
+brazil_gdp = gdp_df[brazil]
+year = brazil_gdp['year'] > 1930 
+brazil_gdp = brazil_gdp[year]
+# print(brazil_gdp.info())
+
+avg_gdp_brazil = brazil_gdp['gdppc'].mean()
+avg_pop_brazil = brazil_gdp['pop'].mean()
+print(avg_gdp_brazil)
+
+# Italy
+italy = gdp_df['countrycode'] == 'ITA'
+italy_gdp = gdp_df[italy]
+year = italy_gdp['year'] > 1930 
+italy_gdp = italy_gdp[year]
+# print(italy_gdp.info())
+
+avg_gdp_italy = italy_gdp['gdppc'].mean()
+avg_pop_italy = italy_gdp['pop'].mean()
+print(avg_gdp_italy)
+
+# Argentina
+argentina = gdp_df['countrycode'] == 'ARG'
+argentina_gdp = gdp_df[argentina]
+year = argentina_gdp['year'] > 1930 
+argentina_gdp = argentina_gdp[year]
+avg_gdp_argentina = argentina_gdp['gdppc'].mean()
+avg_pop_argentina = argentina_gdp['pop'].mean()
+
+# France
+france = gdp_df['countrycode'] == 'FRA'
+france_gdp = gdp_df[france]
+year = france_gdp['year'] > 1930 
+france_gdp = france_gdp[year]
+avg_gdp_france = france_gdp['gdppc'].mean()
+avg_pop_france = france_gdp['pop'].mean()
+
+# Germany
+germany = gdp_df['countrycode'] == 'DEU'
+germany_gdp = gdp_df[germany]
+year = germany_gdp['year'] > 1930 
+germany_gdp = germany_gdp[year]
+avg_gdp_germany = germany_gdp['gdppc'].mean()
+avg_pop_germany = germany_gdp['pop'].mean()
+germany_gdp_total = avg_gdp_germany * avg_pop_germany
+
+# China
+china = gdp_df['countrycode'] == 'HKG'
+china_gdp = gdp_df[china]
+year = china_gdp['year'] > 1930 
+china_gdp = china_gdp[year]
+avg_gdp_china = china_gdp['gdppc'].mean()
+avg_pop_china = china_gdp['pop'].mean()
+
+# Israel
+israel = gdp_df['countrycode'] == 'ISR'
+israel_gdp = gdp_df[israel]
+year = israel_gdp['year'] > 1930 
+israel_gdp = israel_gdp[year]
+avg_gdp_israel = israel_gdp['gdppc'].mean()
+avg_pop_israel = israel_gdp['pop'].mean()
+
+# Angola
+angola = gdp_df['countrycode'] == 'AGO'
+angola_gdp = gdp_df[angola]
+year = angola_gdp['year'] > 1930 
+angola_gdp = angola_gdp[year]
+avg_gdp_angola = angola_gdp['gdppc'].mean()
+avg_pop_angola = angola_gdp['pop'].mean()
+
+# Slovenia
+slovenia = gdp_df['countrycode'] == 'SVN'
+slovenia_gdp = gdp_df[slovenia]
+year = slovenia_gdp['year'] > 1930 
+slovenia_gdp = slovenia_gdp[year]
+avg_gdp_slovenia = slovenia_gdp['gdppc'].mean()
+avg_pop_slovenia = slovenia_gdp['pop'].mean()
+
+
+# Jordan
+jordan = gdp_df['countrycode'] == 'JOR'
+jordan_gdp = gdp_df[jordan]
+year = jordan_gdp['year'] > 1930 
+jordan_gdp = jordan_gdp[year]
+avg_gdp_jordan = jordan_gdp['gdppc'].mean()
+avg_pop_jordan = jordan_gdp['pop'].mean()
+
+def total_gdp(avg_gdppc, avg_pop):
+    total = avg_gdppc * avg_pop
+    return total 
+
+
+# Average GDPPCs
+print(f"Brazil:{avg_gdp_brazil}\nItaly:{avg_gdp_italy}\n Argentina:{avg_gdp_argentina}\n France:{avg_gdp_france}\n Germany:{avg_gdp_germany}")
+
+# Average total gdp
+# Brazil
+# print(f"Brazil total gdp: {total_gdp(avg_gdp_brazil, avg_pop_brazil)}")
+# # Italy
+# print(f"Italy total gdp: {total_gdp(avg_gdp_italy, avg_pop_italy)}")
+# # Argentina 
+# print(f"Argentina total gdp: {total_gdp(avg_gdp_argentina, avg_pop_argentina)}")
+# # France 
+# print(f"France total gdp: {total_gdp(avg_gdp_france, avg_pop_france)}")
+# # Germany
+# print(f"Germany total gdp: {total_gdp(avg_gdp_germany, avg_pop_germany)}")
+# # China
+# print(f"China total gdp: {total_gdp(avg_gdp_china, avg_pop_china)}")
+# # Israel 
+# print(f"Israel total gdp: {total_gdp(avg_gdp_israel, avg_pop_israel)}")
+# # Angola
+# print(f"Angola total gdp: {total_gdp(avg_gdp_angola, avg_pop_angola)}")
+# # Slovenia
+# print(f"Slovenia total gdp: {total_gdp(avg_gdp_slovenia, avg_pop_slovenia)}")
+# # Jordan
+# print(f"Jordan total gdp: {total_gdp(avg_gdp_jordan, avg_pop_jordan)}")
+
+PATH_LIQUIDITY_INTERNATIONAL = 'international_liquidity.csv'
+li_df = pd.read_csv(PATH_LIQUIDITY_INTERNATIONAL)
+# print(li_df.info())
+print(li_df.head(5))
+
+# Codes
+# Brazil: BRA.TRGMV_REVS.USD.A
+# Italy: ITA.TRGMV_REVS.XDR.A
+# Argentina: ARG.TRGMV_REVS.USD.A
+# France: FRA.TRGMV_REVS.USD.A
+# Germany: DEU.TRGMV_REVS.XDR.A
+# China: HKG.TRGMV_REVS.USD.A
+# Israel: ISR.TRGMV_REVS.XDR.A
+# Angola: AGO.TRGMV_REVS.USD.A
+# Slovenia: SVN.TRGMV_REVS.XDR.A
+# Jordan: JOR.TRGMV_REVS.USD.A
+
+wanted_countries = ['BRA.TRGMV_REVS.USD.A', 'ITA.TRGMV_REVS.XDR.A', 
+                    'ARG.TRGMV_REVS.USD.A', 'FRA.TRGMV_REVS.USD.A',
+                    'DEU.TRGMV_REVS.XDR.A', 'HKG.TRGMV_REVS.USD.A', 'ISR.TRGMV_REVS.XDR.A',
+                    'AGO.TRGMV_REVS.USD.A', 'SVN.TRGMV_REVS.XDR.A', 'JOR.TRGMV_REVS.USD.A']
+
+all_countries = li_df['SERIES_CODE'].to_list()
+unwanted = []
+
+for country in all_countries:
+    if country not in wanted_countries:
+        unwanted.append(country)
+
+# li_df = li_df.drop(unwanted, axis=0)
+
+new_li_df = li_df[li_df['SERIES_CODE'].isin(wanted_countries)]
+print(new_li_df.head())

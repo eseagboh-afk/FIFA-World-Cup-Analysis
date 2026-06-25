@@ -27,12 +27,13 @@ An analysis of FIFA World Cup statistics over time is necessary to identify pote
 
 This analysis focuses on:
 * Best performing national teams in the FIFA World Cup, analyzed by:
+    - Countries with the most World Cup matches played
     - Countries with the most World Cup match wins
     - Countries with the most World Cup match goals
     - Countries with the most World Cup tournament wins
 
 * Worst performing national teams in the FIFA World Cup, analyzed by:
-    - Countries with the least World Cup match wins
+    - Countries with the least World Cup matches played
     - Countries with the least World Cup match goals
 
 * Team demographics and the clubs/leagues of players of best performing national teams, analyzed by:
@@ -47,10 +48,34 @@ This analysis focuses on:
     - GDP
     - Total Reserves (gold at market value) from the International Liquidity dataset
 
+# Snapshot of the World Cup
+
+* Total number of World Cup tournaments (excluding 2026)
+    **22**
+
+* Total number of matches in a World Cup tournament (excluding 2026)
+    **104**
+
+* Total number of qualifying teams for a World Cup tournament
+    **1982 to 1994**: 24 Teams
+    **1998 to 2022**: 32 Teams
+    **2026**: 48 Teams
+
 ## Summary of Analysis
+
+**Cut off date for this summary: June 17, 2026** 
+
+*Match Statistics are subject to increase, as a World Cup tournament was ongoing at the time of this analysis*
 
 * Average number of World Cup matches played by each team:
     **Approximately 23**
+
+* Countries that have played the most World Cup matches:
+    1. Brazil (95 matches)
+    2. Germany (92 matches)
+    3. Argentina (72 matches)
+    4. Italy (62 matches)
+    5. France (60 matches)
 
 * Countries with the most World Cup match wins:
     1. Brazil
@@ -66,40 +91,57 @@ This analysis focuses on:
     4. France (127 goals)
     5. Italy (113 goals)
 
-* Countries that have played the most World Cup matches:
-    1. Brazil (95 matches)
-    2. Germany (92 matches)
-    3. Argentina (72 matches)
-    4. Italy (62 matches)
-    5. France (60 matches)
-
 * Countries with the least World Cup match concessions who have played at least 49 matches (these teams have played more matches than 90% of world cup qualifiers over time):
     1. Italy (17 matches lost out of 62)
     2. Brazil (19 matches lost out of 95)
     3. Spain (19 matches lost out of 50)
     4. France (20 matches lost out of 60) 
     5. England (20 matches lost out of 53)
-
-* Countries with the least World Cup match concessions who have played at least 23 matches (the average): 
+ 
 
 * Countries with the most World Cup tournament wins:
-* Top performing countries (based on the above metrics)
-* Top performing countries team demographics:
-    - Brazil
-        * Clubs of starting 11
-        * Weekly salary of starting 11
-    - Italy
-        * Clubs of starting 11
-        * Weekly salary of starting 11
-    - Argentina
-        * Clubs of starting 11
-        * Weekly salary of starting 11
-     - France
-        * Clubs of starting 11
-        * Weekly salary of starting 11
-     - Germany
-        * Clubs of starting 11
-        * Weekly salary of starting 11
+    1. Brazil (5 tournament wins)
+    2. Germany (4 tournament wins)
+    3. Italy (4 tournament wins)
+    4. Germany (4 tournament wins)
+    5. Argentina (3 tournament wins)
+    6. Uruguay (2 tournament wins)
+    7. France (2 tournament wins)
+    8. Spain (1 tournament win)
+    9. England (1 tournament win)
+
+* Top performing countries (based on the above metrics):
+    * Brazil, Italy, Argentina, France, Germany
+
+* Countries with the least World Cup matches played:
+    1. Jordan (1 match played)
+    2. Cuba (3 matches played)
+    3. Slovakia (3 matches played)
+    4. Jamaica (3 matches played)
+    5. Angola (3 matches played)
+
+* Countries with the least goals scored:
+    1. China (0 goals scored)
+    2. Israel (0 goals scored)
+    3. Angola (0 goals scored)
+    4. Slovenia (1 goal scored)
+    5. Jordan (1 goal scored)
+
+* Average total GDP of top performing national teams from 1930 to 2022:
+    1. Brazil: $805,002,936
+    2. Italy: $1,014,315,528
+    3. Argentina: $325,863,367
+    4. France: $1,129,832,908
+    5. Germany: $1,677,655,862
+
+* Average total GDP of worst performing national teams from 1930 to 2022:
+    1. China: $107,300,931
+    2. Israel: $89,886,626
+    3. Angola: $31,916,863
+    4. Slovenia: $33,674,551
+    5. Jordan: $25,190,019 
+
+**Avg GDP = avg GDP per capita x avg population**
 
 ## Sources 
 
@@ -110,3 +152,5 @@ This analysis focuses on:
 [Sports Industry: A Research Guide](https://guides.loc.gov/sports-industry/soccer)
 
 [Saudi development fund to offer loans to FIFA member nations](https://www.espn.com/soccer/story/_/id/47085921/saudi-development-fund-offer-loans-fifa-member-nations)
+
+[Success stories from the FIFA World Cup's last expansion](https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/celebrating-history-of-32-team-world-cup-1998-2022)
