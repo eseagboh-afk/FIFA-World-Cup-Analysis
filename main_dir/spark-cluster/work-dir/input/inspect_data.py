@@ -422,5 +422,7 @@ for country in all_countries:
 
 # li_df = li_df.drop(unwanted, axis=0)
 
-new_li_df = li_df[li_df['SERIES_CODE'].isin(wanted_countries)]
-print(new_li_df.head())
+# new_li_df = li_df[li_df['SERIES_CODE'].isin(wanted_countries)]
+# print(new_li_df.head())
+
+print(world_cup.info())

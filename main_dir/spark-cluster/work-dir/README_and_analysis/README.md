@@ -97,7 +97,6 @@ This analysis focuses on:
     3. Spain (19 matches lost out of 50)
     4. France (20 matches lost out of 60) 
     5. England (20 matches lost out of 53)
- 
 
 * Countries with the most World Cup tournament wins:
     1. Brazil (5 tournament wins)

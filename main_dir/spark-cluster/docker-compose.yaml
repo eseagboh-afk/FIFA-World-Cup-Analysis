@@ -1,0 +1,84 @@
+services:
+  airflow:
+    image: apache/airflow:latest
+    container_name: af
+    hostname: af
+    command: airflow standalone
+    ports:
+      - 8080:8080 # Airflow Web UI
+    networks:
+      - spark-network
+    volumes:
+      - ./dags:/opt/airflow/dags
+
+  master:
+    build: ./master
+    container_name: master
+    hostname: leader
+    ports:
+      - 8081:8080 # Spark Web UI
+      - 7077:7077 # Spark leader port
+    volumes:
+      - ./conf:/opt/spark/conf
+      - ./work-dir:/opt/spark/work-dir
+      - ./output:/opt/spark/files/out
+      - ./input:/opt/spark/files/in
+      - ./input:/opt/spark/work-dir/input
+      - ./jars/postgresql-42.7.10.jar:/opt/spark/jars/postgresql-42.7.10.jar
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master -h 0.0.0.0
+    networks:
+      - spark-network
+
+  api_2:
+    build: ./api_2
+    restart: always
+    container_name: api_2
+    hostname: api
+    ports:
+      - 5001:5000 # Spark API
+    volumes:
+      - ./conf:/opt/spark/conf
+      - ./work-dir:/opt/spark/work-dir
+      - ./output:/opt/spark/files/out
+      - ./input:/opt/spark/files/in
+      - ./input:/opt/spark/work-dir/input
+    networks:
+      - spark-network
+
+  worker-1:
+    build: ./worker
+    container_name: worker-1
+    hostname: worker-1
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://leader:7077
+    ports:
+      - 8082:8081
+    volumes:
+      - ./conf:/opt/spark/conf
+      - ./output:/opt/spark/files/out
+      - ./input:/opt/spark/files/in
+      - ./input:/opt/spark/work-dir/input
+    networks:
+      - spark-network
+    depends_on:
+      - master
+
+  worker-2:
+    build: ./worker
+    container_name: worker-2
+    hostname: worker-2
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://leader:7077
+    ports:
+      - 8083:8081
+    volumes:
+      - ./conf:/opt/spark/conf
+      - ./output:/opt/spark/files/out
+      - ./input:/opt/spark/files/in
+      - ./input:/opt/spark/work-dir/input
+    networks:
+      - spark-network
+    depends_on:
+      - master
+
+networks:
+  spark-network:
+
