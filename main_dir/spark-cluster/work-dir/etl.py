@@ -33,23 +33,30 @@ class Transformer:
 
 # Countries table 
    def make_countries_table(self, df):
-       countries_df = (df.select(F.col('country_1').alias('country_name')).union(df.select(F.col('country_2').alias('country_name'))).groupBy(
-           'country_name').agg(F.count('*').alias('total_matches_played')))
+       countries_df = (
+           df.select(F.col('match_date'),
+                     F.col('country_1').alias('country_name'))
+                     .union(df.select(F.col('match_date'),
+                                      F.col('country_2').alias('country_name')))
+                                      .distinct().groupBy('country_name').agg(F.count('country_name').alias('total_matches_played'))
+       )
        winners_df = (df.select(F.col('winning_team').alias('country_name')).groupBy('country_name').agg(F.count('country_name').alias('total_matches_won')))
        losers_df = (df.select(F.col('losing_team').alias('country_name')).groupBy('country_name').agg(F.count('country_name').alias('total_matches_lost')))
-       goals_df = (df.select(F.col('country_1').alias('country_name'), F.col('country_1_score').alias('goals_scored'))
-                   .union(df.select(F.col('country_2').alias('country_name'), F.col('country_2_score').alias('goals_scored'))
-                          .groupBy('country_name').agg(F.sum('goals_scored').alias('total_goals_scored'))))
-       countries_df = (countries_df.join(winners_df, 'country_name', 'left').join(losers_df, 'country_name', 'left').join(goals_df, 'country_name', 'left'))
-       countries_df = countries_df.dropDuplicates()
+       goals_df = (df.select(F.col('country_1').alias('country_name'), F.col('country_1_score')).groupBy('country_name').agg(F.sum('country_1_score').alias('total_goals_scored_winner')))
+       goals_df_2 = (df.select(F.col('country_2').alias('country_name'), F.col('country_2_score')).groupBy('country_name').agg(F.sum('country_2_score').alias('total_goals_scored_loser')))
+       goals_final = goals_df.join(goals_df_2, 'country_name', 'left')
+       goals_final = goals_final.withColumn('total_goals_scored', F.col('total_goals_scored_winner') + F.col('total_goals_scored_loser'))
+       goals_final = goals_final.drop('total_goals_scored_winner', 'total_goals_scored_loser')
+       countries_df = (countries_df.join(winners_df, 'country_name', 'left').join(losers_df, 'country_name', 'left').join(goals_final, 'country_name', 'left'))
+       countries_df = countries_df.fillna(0)
        logger.info(f"Countries table: {countries_df.show()}")
        return countries_df
    
 # Economic status table 
    def make_economic_status_table(self, df, df_2):
-       economic_status_df = (df.withColumn('total_gdp', F.col('gdppc') * F.col('population')).groupBy('country')
-                             .agg(F.avg('total_gdp').alias('avg_total_gdp'),
-                                  F.avg('population').alias('avg_population')))
+       economic_status_df = (df.withColumn('total_gdp', F.col('gdppc').cast('bigint') * F.col('pop').cast('bigint')).groupBy('country')
+                             .agg(F.round(F.avg('total_gdp'), 2).alias('avg_total_gdp'),
+                                  F.round(F.avg('pop'), 2).alias('avg_population')))
        economic_status_df = economic_status_df.drop('year', 'gdppc', 'pop')
        economic_status_df = (economic_status_df.join(df_2, on='country', how='left'))
        logger.info(f"Economic status table: {economic_status_df.show()}")
@@ -57,21 +64,19 @@ class Transformer:
    
 # Winners table  
    def make_winners_table(self, df, df_2):
-       match_winners_df = (df.withColumn('match_id', F.col('match_id')).withColumn('winning_country', F.col('winning_team')))
-       match_winners_df = match_winners_df.withColumnRenamed('winning_country', 'country_name')
-       df_2 = df_2.select(F.col('country_id'),F.col('country_name'))
-       match_winners_df = (match_winners_df.join(df_2, on='country_name', how='left'))
-       match_winners_df = match_winners_df.drop('country_name')
+       df = df.withColumnRenamed('winning_team', 'country_name')
+       match_winners_df = df.join(df_2, on='country_name', how='left')
+       match_winners_df = match_winners_df.drop('match_date', 'country_name')
+       match_winners_df = match_winners_df.dropna()
        logger.info(f"Match winners table: {match_winners_df.show()}")
        return match_winners_df
    
 # Losers table  
    def make_losers_table(self, df, df_2):
-       match_losers_df = (df.withColumn('match_id', F.col('match_id')).withColumn('losing_country', F.col('losing_team')))
-       match_losers_df = match_losers_df.withColumnRenamed('losing_country', 'country_name')
-       df_2 = df_2.select(F.col('country_id'), F.col('country_name'))
-       match_losers_df = match_losers_df.join(df_2, on='country_name', how='left')
-       match_losers_df = match_losers_df.drop('country_name')
+       df = df.withColumnRenamed('losing_team', 'country_name')
+       match_losers_df = df.join(df_2, on='country_name', how='left')
+       match_losers_df = match_losers_df.drop('match_date', 'country_name')
+       match_losers_df = match_losers_df.dropna()
        logger.info(f"Match losers table: {match_losers_df.show()}")
        return match_losers_df
 
@@ -118,7 +123,7 @@ class ETLProcessor:
     # Extract from secondary CSV 2
     def extract_from_secondary_csv_2(self):
         international_liquidity_df = self._spark.read.csv(self._secondary_csv_path_2, header=True, inferSchema=True)
-        years = [str(year) for year in range(1930, 2022)]
+        years = [str(year) for year in range(1950, 2025)]
         international_liquidity_df = (international_liquidity_df.withColumn('country', F.col('COUNTRY'))
                                       .selectExpr('country', 
                                                   f"""
@@ -128,8 +133,10 @@ class ETLProcessor:
         logger.info(f"International Liquidity dataframe: {international_liquidity_df.show()}")
         liquidity_avg_df = (international_liquidity_df.withColumn('international_liquidity',
                                                                   F.col('international_liquidity').cast('float')).groupBy('country')
-                                                                  .avg(F.avg('international_liquidity').alias('avg_international_liquidity')))
-        logger.info(f"Liquidity average dataframe: {liquidity_avg_df.schema()}")
+                                                                  .agg(F.round(F.avg('international_liquidity'), 2).alias('avg_international_liquidity')))
+        
+        logger.info(f"Liquidity average dataframe: {liquidity_avg_df.show()}")
+
         return liquidity_avg_df
 
     # Load to db
@@ -139,7 +146,7 @@ class ETLProcessor:
     
     # Load from db
     def load_from_db(self, query):
-        df = self._spark.read.format("jdbc").options(**self._jdbc_options, dbtable=query).load()
+        df = self._spark.read.format("jdbc").options(**self._jdbc_options).option("dbtable", f"({query}) AS tmp").load()
         return df 
 
     # Load matches table to db
@@ -153,7 +160,7 @@ class ETLProcessor:
         df = self.extract_from_primary_csv()
         df = self._transformer.make_match_table(df)
         countries_df = self._transformer.make_countries_table(df)
-        self.load_to_db(countries_df, 'countries')
+        self.load_to_db(countries_df, 'world_cup.countries')
     
     # Load economic status table to db
     def economic_status_table_to_db(self):
@@ -163,20 +170,20 @@ class ETLProcessor:
         economic_status_df = self._transformer.make_economic_status_table(df, df_2)
         economic_status_df = economic_status_df.withColumnRenamed('country', 'country_name')
         economic_status_df = economic_status_df.join(countries_df, on='country_name', how='left')
-        self.load_to_db(economic_status_df, 'economic_status')
+        economic_status_df = economic_status_df.dropna(subset=['country_id'])
+        logger.info(f"Economic status dataframe: {economic_status_df.show()}")
+        self.load_to_db(economic_status_df, 'world_cup.economic_status')
     
     # Load winners table to db
     def winners_table_to_db(self):
-        source_df = self.extract_from_primary_csv()
-        df = self._transformer.make_match_table(df)
-        df_2 = self._transformer.make_countries_table(source_df)
-        match_winners_df = self._transformer.make_winners_table(df, df_2)
-        self.load_to_db(match_winners_df, 'winners')
+        df_1 = self.load_from_db("""SELECT match_date, match_id, winning_team FROM matches""")
+        df_2 = self.load_from_db("""SELECT country_id, country_name FROM countries""")
+        match_winners_df = self._transformer.make_winners_table(df_1, df_2)
+        self.load_to_db(match_winners_df, 'world_cup.winning_teams')
     
     # Load losers table to db
     def losers_table_to_db(self):
-        source_df = self.extract_from_primary_csv()
-        df = self._transformer.make_match_table(df)
-        df_2 = self._transformer.make_countries_table(source_df)
-        match_losers_df = self._transformer.make_losers_table(df, df_2)
-        self.load_to_db(match_losers_df, 'losers')
+        df_1 = self.load_from_db("""SELECT match_date, match_id, losing_team FROM matches""")
+        df_2 = self.load_from_db("""SELECT country_id, country_name FROM countries""")
+        match_losers_df = self._transformer.make_losers_table(df_1, df_2)
+        self.load_to_db(match_losers_df, 'world_cup.losing_teams')

@@ -10,6 +10,7 @@ services:
       - spark-network
     volumes:
       - ./dags:/opt/airflow/dags
+      #- ./work-dir:/opt/airflow/work-dir
 
   master:
     build: ./master
@@ -21,10 +22,6 @@ services:
     volumes:
       - ./conf:/opt/spark/conf
       - ./work-dir:/opt/spark/work-dir
-      - ./output:/opt/spark/files/out
-      - ./input:/opt/spark/files/in
-      - ./input:/opt/spark/work-dir/input
-      - ./jars/postgresql-42.7.10.jar:/opt/spark/jars/postgresql-42.7.10.jar
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master -h 0.0.0.0
     networks:
       - spark-network
@@ -39,9 +36,6 @@ services:
     volumes:
       - ./conf:/opt/spark/conf
       - ./work-dir:/opt/spark/work-dir
-      - ./output:/opt/spark/files/out
-      - ./input:/opt/spark/files/in
-      - ./input:/opt/spark/work-dir/input
     networks:
       - spark-network
 
@@ -54,9 +48,7 @@ services:
       - 8082:8081
     volumes:
       - ./conf:/opt/spark/conf
-      - ./output:/opt/spark/files/out
-      - ./input:/opt/spark/files/in
-      - ./input:/opt/spark/work-dir/input
+      - ./work-dir:/opt/spark/work-dir
     networks:
       - spark-network
     depends_on:
@@ -71,9 +63,7 @@ services:
       - 8083:8081
     volumes:
       - ./conf:/opt/spark/conf
-      - ./output:/opt/spark/files/out
-      - ./input:/opt/spark/files/in
-      - ./input:/opt/spark/work-dir/input
+      - ./work-dir:/opt/spark/work-dir
     networks:
       - spark-network
     depends_on:

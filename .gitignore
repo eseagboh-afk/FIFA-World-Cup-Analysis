@@ -1,6 +1,3 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*
 global-bundle.pem
-main_dir/spark-cluster/conf/spark-defaults.conf
-main_dir/spark-cluster/api_2/Dockerfile
-main_dir/spark-cluster/api_2/app.py
-main_dir/spark-cluster/api_2/requirements.txt
-main_dir/spark-cluster/master/Dockerfile
